@@ -22,6 +22,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@apollo/client": "^3.6.10",
     "@fastify/static": "^6.4.1",
     "@nestjs/common": "9.0.0",
     "@nestjs/config": "2.2.0",

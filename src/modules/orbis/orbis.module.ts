@@ -7,4 +7,4 @@ import { OrbisService } from './orbis.service';
     providers: [OrbisService],
     controllers: []
 })
-export class NftModule { }
+export class OrbisModule { }
