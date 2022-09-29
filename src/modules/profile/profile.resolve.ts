@@ -1,16 +1,6 @@
 import { UseGuards } from '@nestjs/common';
 import { Resolver, Query, Args, Context, Mutation } from '@nestjs/graphql';
-import { User } from '@sentry/types';
-import { isEthereumAddress } from 'class-validator';
-import { AuthGuard } from '../auth/guards/auth.guard';
-import { OptionalAuthGuard } from '../auth/guards/optional-auth.guard';
-import { NftService } from '../nft/nft.service';
-import { UserService } from '../user/services/user.service';
-import { BitmonWhitelist, BitmonWhitelistUpdate } from './dto/BitmonWhitelist';
-import { ProfileInfoBySlug } from './dto/ProfileInfoBySlug';
-import { NftListResponse } from './dto/responses.dto';
-import { Profile } from './entities/profile.entity';
-import { ProfileService } from './services/profile.service';
+
 
 @Resolver(() => Profile)
 export class ProfileResolver {
