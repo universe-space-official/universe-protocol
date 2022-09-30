@@ -1,7 +1,6 @@
 node_modules/
 tmp/
 yarn-error.log
-.env
 .DS_Store
 coverage/
 .eslintcache
@@ -30,3 +29,6 @@ newrelic_agent.log
 # Yalc
 .yalc
 yalc.lock
+
+#
+dist
