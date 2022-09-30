@@ -17,8 +17,8 @@ export class ProfileResolver {
     try {
       const nftResponse = await this.nftService.getNftsInAddress(address);
 
-      const NFT721 = [];
-      const NFT1155 = [];
+      const NFT721: string[] = [];
+      const NFT1155: string[] = [];
 
       for (let i = 0; i < nftResponse.length; i++) {
         const newNFT721 = nftResponse[i].data.accounts.ERC721tokens;

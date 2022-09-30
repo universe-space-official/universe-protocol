@@ -1,4 +1,4 @@
-import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
+import { ApolloClient, InMemoryCache, gql, ApolloQueryResult } from '@apollo/client';
 
 const APIURL_XDAI = "https://api.thegraph.com/subgraphs/name/leon-do/xdai-erc721-erc1155";
 const APIURL_ETH = "https://api.thegraph.com/subgraphs/name/ryry79261/mainnet-erc721-erc1155";
@@ -19,7 +19,7 @@ export class NftService {
 
     const graphs = [APIURL_XDAI, APIURL_ETH, APIURL_POLYGON, APIURL_BSC, APIURL_BOBA, APIURL_AVALANCHE, APIURL_RINKEBY, APIURL_GOERLI, APIURL_MUMBAI];
 
-    let nftList = [];
+    let nftList: ApolloQueryResult<any>[] = [];
 
     for (let i = 0; i < graphs.length; i++) {
       let client = new ApolloClient({
