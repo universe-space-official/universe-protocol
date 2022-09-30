@@ -12,6 +12,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         OrbisService,
         NftService
     ],
-    exports: [ProfileService] // What is this? what do i need to export and why 
+    exports: [] // What is this? what do i need to export and why 
 })
 export class ProfileModule { }

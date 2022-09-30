@@ -11,7 +11,7 @@ import { configSchema } from './config/config-schema';
 import { DummyModule } from './modules/dummy/dummy.module'; // Remove me
 
 import { GraphQLModule } from '@nestjs/graphql';
-import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { ApolloDriver } from '@nestjs/apollo';
 
 
 // @TODO: For some reason security modules are being broken right now, we should integrate them
