@@ -10,6 +10,10 @@ import { configSchema } from './config/config-schema';
 // import { ThrottlerGuard } from '@nestjs/throttler';
 import { DummyModule } from './modules/dummy/dummy.module'; // Remove me
 
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+
+
 // @TODO: For some reason security modules are being broken right now, we should integrate them
 // in the future
 @Module({
@@ -19,6 +23,12 @@ import { DummyModule } from './modules/dummy/dummy.module'; // Remove me
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: getLoggerConfig,
+    }),
+    GraphQLModule.forRoot({
+      context: ({ req }) => ({ headers: req.headers }),
+      autoSchemaFile: true,
+      playground: true,
+      driver: ApolloDriver
     }),
     ConfigModule.forRoot({
       isGlobal: true,
@@ -40,4 +50,4 @@ import { DummyModule } from './modules/dummy/dummy.module'; // Remove me
     // },
   ],
 })
-export class AppModule {}
+export class AppModule { }

@@ -1,12 +1,13 @@
 import { UseGuards } from '@nestjs/common';
 import { Resolver, Query, Args, Context, Mutation } from '@nestjs/graphql';
+import { NftService } from 'modules/nft/nft.service';
+import { Profile } from './profile.entity';
+import { NftListResponse } from './responses.dto';
 
 
 @Resolver(() => Profile)
 export class ProfileResolver {
   constructor(
-    private profileService: ProfileService,
-    private userService: UserService,
     private nftService: NftService
   ) { }
 
