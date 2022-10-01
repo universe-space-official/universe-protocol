@@ -1,4 +1,5 @@
 node_modules/
+/dist
 tmp/
 yarn-error.log
 .DS_Store
@@ -31,4 +32,3 @@ newrelic_agent.log
 yalc.lock
 
 #
-dist
