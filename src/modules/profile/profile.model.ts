@@ -9,9 +9,6 @@ export enum ProfileType {
 // @TODO: To add both userId and projectId
 // timestamp wiithout timezone
 @ObjectType()
-@Entity({
-  schema: 'profile'
-})
 export class Profile {
   @Field()
   @PrimaryGeneratedColumn('uuid')

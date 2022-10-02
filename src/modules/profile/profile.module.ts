@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 // import { OrbisService } from 'modules/orbis/orbis.service';
 import { NftService } from '../nft/nft.service';
-import { ProfileResolver } from './profile.resolve';
+import { ProfileResolver } from './profile.resolver';
 
 import { TypeOrmModule } from '@nestjs/typeorm';
 

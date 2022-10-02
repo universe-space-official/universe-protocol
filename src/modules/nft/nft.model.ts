@@ -27,6 +27,7 @@ export class NFT721 {
     metadata?: string;
 }
 
+@ObjectType()
 export class NFT1155 {
     @Field({ nullable: true })
     token_address?: string;

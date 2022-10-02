@@ -1,9 +1,10 @@
 // import { UseGuards } from '@nestjs/common';
 import { Resolver, Query, Args } from '@nestjs/graphql';
 import { NftService } from '../nft/nft.service';
-// import { NftService } from 'modules/nft/nft.service';
-import { Profile } from './profile.entity';
-import { NftListResponse } from './responses.dto';
+
+import { NftListResponse } from '../nft/nft.model'; // change to model inside NFT module
+import { Profile } from './profile.model';
+
 
 
 @Resolver(() => Profile)

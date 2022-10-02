@@ -1,17 +1,20 @@
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { DirectiveLocation, GraphQLDirective } from 'graphql';
-import { upperDirectiveTransformer } from './common/directives/upper-case.directive';
-import { RecipesModule } from './recipes/recipes.module';
+// import { RecipesModule } from './recipes/recipes.module';
+
+import { ProfileModule } from './modules/profile/profile.module';
+import { NftListResponse } from './modules/nft/nft.model';
+import { Profile } from './modules/profile/profile.model';
 
 @Module({
   imports: [
-    RecipesModule,
+    ProfileModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      autoSchemaFile: 'schema.gql',
-      transformSchema: schema => upperDirectiveTransformer(schema, 'upper'),
+      autoSchemaFile: true,
       installSubscriptionHandlers: true,
       buildSchemaOptions: {
         directives: [
@@ -22,6 +25,16 @@ import { RecipesModule } from './recipes/recipes.module';
         ],
       },
     }),
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: 'localhost',
+      port: 5432,
+      username: 'example',
+      password: 'example',
+      database: 'example',
+      entities: [Profile, NftListResponse],
+      synchronize: true,
+    })
   ],
 })
 export class AppModule { }
