@@ -2,56 +2,22 @@ import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class NFT721 {
+    @Field({ nullable: false })
+    id?: string
     @Field({ nullable: true })
-    token_address?: string;
-
-    @Field({ nullable: true })
-    token_id?: string;
-
-    @Field({ nullable: true })
-    owner_of?: string;
-
-    @Field({ nullable: true })
-    contract_type?: string;
-
-    @Field({ nullable: true })
-    name?: string;
-
-    @Field({ nullable: true })
-    symbol?: string;
-
-    @Field({ nullable: true })
-    token_uri?: string;
-
-    @Field({ nullable: true })
-    metadata?: string;
+    uri?: string
+    @Field({ nullable: false })
+    identifier?: number
+    @Field({ nullable: false })
+    chainId?: number
 }
 
 @ObjectType()
 export class NFT1155 {
+    @Field({ nullable: false })
+    id?: string
     @Field({ nullable: true })
-    token_address?: string;
-
-    @Field({ nullable: true })
-    token_id?: string;
-
-    @Field({ nullable: true })
-    owner_of?: string;
-
-    @Field({ nullable: true })
-    contract_type?: string;
-
-    @Field({ nullable: true })
-    name?: string;
-
-    @Field({ nullable: true })
-    symbol?: string;
-
-    @Field({ nullable: true })
-    token_uri?: string;
-
-    @Field({ nullable: true })
-    metadata?: string;
+    uri?: string
 }
 
 @ObjectType()

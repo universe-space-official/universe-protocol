@@ -1,3 +1,4 @@
+import { request, gql } from 'graphql-request'
 
 
 const APIURL_XDAI = "https://api.thegraph.com/subgraphs/name/leon-do/xdai-erc721-erc1155";
@@ -17,18 +18,21 @@ export class NftService {
 
   async getNftsInAddress(address: string): Promise<any> {
 
-    const graphs = [APIURL_XDAI, APIURL_ETH, APIURL_POLYGON, APIURL_BSC, APIURL_BOBA, APIURL_AVALANCHE, APIURL_RINKEBY, APIURL_GOERLI, APIURL_MUMBAI];
-
+    const graphs = [APIURL_XDAI, APIURL_ETH, APIURL_POLYGON, APIURL_BSC]// APIURL_BOBA, APIURL_AVALANCHE, APIURL_RINKEBY, APIURL_GOERLI, APIURL_MUMBAI];
+    const chainsIds = [100,1,137,56]
     let nftList: any[] = [];
 
     for (let i = 0; i < graphs.length; i++) {
-      let data = JSON.stringify({
-        query: `{
+
+
+      let tokensQuery = gql`
+        {
             accounts(where: {id: "${address.toLowerCase()}"}) {
               id
               ERC721tokens {
                 id,
                 uri
+                identifier
               }
               ERC1155balances{
                 id
@@ -36,47 +40,45 @@ export class NftService {
                 token {
                   id
                   uri
+                  identifier
                 }
               }
             }
           }
-           `,
-      });
+           `
 
       // No Support for ERC1155 boba yet
-      if (graphs[i] === "APIURL_BOBA") {
-        data = JSON.stringify({
-          // To be defined how much minimum liquidity is ok
-          query: `{
-              accounts(where: {id: "${address.toLowerCase()}"}) {
+      if (graphs[i] === APIURL_BOBA) {
+        tokensQuery = gql`
+            {
+              accounts(where: {id: "${address.toLowerCase()}") {
                 id
                 ERC721tokens {
                   id,
                   uri
+                  identifier
                 }
               }
             }
-        `,
+        `
+      }
+      let data = await request(graphs[i], tokensQuery);
+      if(!data.accounts[0]){
+        continue
+      }
+      data.accounts[0].ERC721tokens = data.accounts[0].ERC721tokens.map(nft => {
+        nft.chainId = chainsIds[i];
+        return(nft)
+      });
+      if(data.accounts[0].ERC1155balances){
+        data.accounts[0].ERC1155balances = data.accounts[0].ERC1155balances.map(nft => {
+          nft.chainId = chainsIds[i];
+          return(nft)
         });
       }
-
-      const response = await fetch(
-        graphs[i],
-        {
-          method: 'post',
-          body: data,
-          headers: {
-            'Content-Type': 'application/json',
-            'Content-Length': data.length.toString(),
-            Authorization:
-              'Apikey DONOTSENDAPIKEYS',
-          },
-        }
-      );
-
-      nftList.push(response);
+      nftList.push(data)
     }
-
     return nftList;
   }
+
 }

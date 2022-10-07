@@ -5,63 +5,8 @@ const orbis = new Orbis();
 
 export class OrbisService {
 
-    async connect(provider: any, lit: any): Promise<any> {
-        await orbis.connect(provider, lit);
-    }
+    constructor() { }
 
-    async isConnected(): Promise<any> {
-        return await orbis.isConnected();
-    }
-
-    async logout(): Promise<any> {
-        return await orbis.logout();
-    }
-
-    async createPost(body: string): Promise<any> {
-        return await orbis.createPost(body);
-    }
-
-    async react(post_id: number, type: string): Promise<any> {
-        return await orbis.react(post_id, type);
-    }
-
-    async updateProfile(content: JSON): Promise<any> {
-        return await orbis.updateProfile(content);
-    }
-
-    async setFollow(did: string, active: boolean): Promise<any> {
-        return await orbis.setFollow(did, active);
-    }
-
-    async createGroup(content: JSON): Promise<any> {
-        return await orbis.createGroup(content);
-    }
-
-    async updateGroup(stream_id: number, content: JSON): Promise<any> {
-        return await orbis.updateGroup(stream_id, content);
-    }
-
-    async createChannel(group_id: number, content: JSON): Promise<any> {
-        return await orbis.createChannel(group_id, content);
-    }
-
-    async updateChannel(channel_id: number, content: JSON): Promise<any> {
-        return await orbis.updateChannel(channel_id, content);
-    }
-
-    async createConversation(content: JSON): Promise<any> {
-        return await orbis.createConversation(content);
-    }
-
-    async sendMessage(content: JSON): Promise<any> {
-        return await orbis.sendMessage(content);
-    }
-
-    async getPosts(content: JSON, page: number): Promise<any> {
-        let { data, error } = await orbis.getPosts(content, page);
-
-        return { data, error };
-    }
 
     async getPost(post_id: string): Promise<any> {
         let { data, error } = await orbis.getPost(post_id);
