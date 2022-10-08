@@ -1,11 +1,11 @@
 // import { UseGuards } from '@nestjs/common';
 import { Resolver, Query, Args } from '@nestjs/graphql';
-import { NftService } from '../nft/nft.service';
-//import { OrbisService } from '../orbis/orbis.service';
+import { NftService } from '../nft/nft.service.js';
+import { OrbisService } from '../orbis/orbis.service.js';
 
-import { NftListResponse } from '../nft/nft.model'; // change to model inside NFT module
-import { Orbis } from '../orbis/orbis.model';
-import { Profile } from './profile.model';
+import { NftListResponse } from '../nft/nft.model.js'; // change to model inside NFT module
+import { Orbis } from '../orbis/orbis.model.js';
+import { Profile } from './profile.model.js';
 
 
 

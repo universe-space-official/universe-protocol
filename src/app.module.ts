@@ -5,10 +5,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { DirectiveLocation, GraphQLDirective } from 'graphql';
 // import { RecipesModule } from './recipes/recipes.module';
 
-import { ProfileModule } from './modules/profile/profile.module';
-import { NftListResponse } from './modules/nft/nft.model';
-import { Profile } from './modules/profile/profile.model';
-//import { Orbis } from './modules/orbis/orbis.model';
+import { ProfileModule } from './modules/profile/profile.module.js';
+import { NftListResponse } from './modules/nft/nft.model.js';
+import { Profile } from './modules/profile/profile.model.js';
+import { Orbis } from './modules/orbis/orbis.model.js';
 
 @Module({
   imports: [

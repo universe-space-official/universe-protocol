@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-//import { OrbisService } from '../orbis/orbis.service';
-import { NftService } from '../nft/nft.service';
-import { ProfileResolver } from './profile.resolver';
+import { OrbisService } from '../orbis/orbis.service.js';
+import { NftService } from '../nft/nft.service.js';
+import { ProfileResolver } from './profile.resolver.js';
 
 import { TypeOrmModule } from '@nestjs/typeorm';
 
@@ -9,7 +9,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     imports: [TypeOrmModule.forFeature([])],
     providers: [
         ProfileResolver,
-        //OrbisService,
+        OrbisService,
         NftService
     ],
     exports: [] // What is this? what do i need to export and why
