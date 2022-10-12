@@ -4,7 +4,7 @@ import { NftService } from '../nft/nft.service.js';
 import { OrbisService } from '../orbis/orbis.service.js';
 
 import { NftListResponse } from '../nft/nft.model.js'; // change to model inside NFT module
-import { Orbis } from '../orbis/orbis.model.js';
+import { OrbisResponse } from '../orbis/orbis.model.js';
 import { Profile } from './profile.model.js';
 
 
@@ -12,7 +12,9 @@ import { Profile } from './profile.model.js';
 @Resolver(() => Profile)
 export class ProfileResolver {
   constructor(
-    private nftService: NftService
+    private nftService: NftService,
+    private orbisService: OrbisService
+
   ) { }
 
 
@@ -50,23 +52,17 @@ export class ProfileResolver {
     }
 
   }
-  /*
-  @Query(() => NftListResponse, { name: 'getProfile' })
-  async getProfile(@Args('address') address: string) {
+
+  @Query(() => OrbisResponse, { name: 'getProfiles' })
+  async getProfiles(@Args('address') address: string) {
 
     try {
 
       const dids = await this.orbisService.getDids(address);
-      let profile, followers, following;
-      if(dids){
-        profile = await this.orbisService.getProfile(dids[0]);
-        followers = await this.orbisService.getProfileFollowers(dids[0]);
-        following = await this.orbisService.getProfileFollowing(dids[0]);
 
-      }
       return {
         code: 200,
-        profile: profile,
+        data: dids,
         message: "Retrieved data correctly"
       }
 
@@ -78,5 +74,5 @@ export class ProfileResolver {
     }
 
   }
-  */
+
 }

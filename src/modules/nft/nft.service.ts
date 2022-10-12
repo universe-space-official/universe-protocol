@@ -30,8 +30,11 @@ export class NftService {
             accounts(where: {id: "${address.toLowerCase()}"}) {
               id
               ERC721tokens {
-                id,
+                id
                 uri
+                contract {
+                  id
+                }
                 identifier
               }
               ERC1155balances{
@@ -40,6 +43,9 @@ export class NftService {
                 token {
                   id
                   uri
+                  contract {
+                    id
+                  }
                   identifier
                 }
               }
@@ -66,13 +72,21 @@ export class NftService {
       if(!data.accounts[0]){
         continue
       }
-      data.accounts[0].ERC721tokens = data.accounts[0].ERC721tokens.map(nft => {
+      data.accounts[0].ERC721tokens = data.accounts[0].ERC721tokens.map(async nft => {
         nft.chainId = chainsIds[i];
+        if(nft.uri){
+          const metadata = JSON.parse(await (await fetch(nft.uri.replace("ipfs://","https://ipfs.io/ipfs/"))).text());
+          nft.metadata = metadata;
+        }
         return(nft)
       });
       if(data.accounts[0].ERC1155balances){
-        data.accounts[0].ERC1155balances = data.accounts[0].ERC1155balances.map(nft => {
+        data.accounts[0].ERC1155balances = data.accounts[0].ERC1155balances.map(async nft => {
           nft.chainId = chainsIds[i];
+          if(nft.uri){
+            const metadata = JSON.parse(await (await fetch(nft.uri.replace("ipfs://","https://ipfs.io/ipfs/"))).text());
+            nft.metadata = metadata;
+          }
           return(nft)
         });
       }
