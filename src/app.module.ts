@@ -8,6 +8,7 @@ import { DirectiveLocation, GraphQLDirective } from 'graphql';
 import { ProfileModule } from './modules/profile/profile.module.js';
 import { NftListResponse } from './modules/nft/nft.model.js';
 import { Profile } from './modules/profile/profile.model.js';
+
 import { Orbis } from './modules/orbis/orbis.model.js';
 
 @Module({

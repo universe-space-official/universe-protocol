@@ -1,4 +1,4 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, InputType, Int, ObjectType } from '@nestjs/graphql';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 export enum ProfileType {
@@ -72,4 +72,11 @@ export class Profile {
   @Field()
   @Column({ default: 2 })
   status: number;
+}
+
+@InputType()
+export class ProfileInput {
+  @Field({ nullable: false })
+  provider: string;
+
 }

@@ -2,7 +2,7 @@ import { Field, ObjectType } from '@nestjs/graphql';
 
 
 @ObjectType()
-export class Profile {
+export class ProfileOrbis {
     @Field({ nullable: true })
     username?: string
     @Field({ nullable: true })
@@ -15,7 +15,7 @@ export class Details {
     @Field({ nullable: false })
     did?: string
     @Field({ nullable: true })
-    profile: Profile
+    ProfileOrbis: ProfileOrbis
 }
 
 @ObjectType()

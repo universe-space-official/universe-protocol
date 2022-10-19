@@ -4,14 +4,15 @@ import { NftService } from '../nft/nft.service.js';
 import { ProfileResolver } from './profile.resolver.js';
 
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { EthersModule } from 'nestjs-ethers';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([])],
+    imports: [TypeOrmModule.forFeature([]), EthersModule.forRoot()],
     providers: [
         ProfileResolver,
         OrbisService,
         NftService
     ],
-    exports: [] // What is this? what do i need to export and why
+    exports: []
 })
 export class ProfileModule { }

@@ -1,15 +1,15 @@
 // import { UseGuards } from '@nestjs/common';
-import { Resolver, Query, Args } from '@nestjs/graphql';
+import { Resolver, Query, Args, Mutation } from '@nestjs/graphql';
 import { NftService } from '../nft/nft.service.js';
 import { OrbisService } from '../orbis/orbis.service.js';
 
 import { NftListResponse } from '../nft/nft.model.js'; // change to model inside NFT module
-import { OrbisResponse } from '../orbis/orbis.model.js';
-import { Profile } from './profile.model.js';
+import { OrbisResponse, ProfileOrbis } from '../orbis/orbis.model.js';
+import { Profile, ProfileInput } from './profile.model.js';
 
 
 
-@Resolver(() => Profile)
+@Resolver(of => Profile)
 export class ProfileResolver {
   constructor(
     private nftService: NftService,
@@ -73,6 +73,11 @@ export class ProfileResolver {
       }
     }
 
+  }
+
+  @Mutation(() => ProfileOrbis, { name: 'createProfile' })
+  async createProfile(): Promise<ProfileOrbis> {
+    return this.orbisService.createProfileOrConnect()
   }
 
 }
