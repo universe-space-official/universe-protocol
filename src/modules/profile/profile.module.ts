@@ -4,10 +4,9 @@ import { NftService } from '../nft/nft.service.js';
 import { ProfileResolver } from './profile.resolver.js';
 
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { EthersModule } from 'nestjs-ethers';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([]), EthersModule.forRoot()],
+    imports: [TypeOrmModule.forFeature([])],
     providers: [
         ProfileResolver,
         OrbisService,

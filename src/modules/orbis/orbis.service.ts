@@ -1,18 +1,14 @@
 
 import { Injectable, NotImplementedException } from "@nestjs/common";
 import { Orbis } from "@orbisclub/orbis-sdk";
-
-import { InjectEthersProvider, BaseProvider, EthersSigner, Wallet } from 'nestjs-ethers';
+import { DID } from 'dids'
+import { Ed25519Provider } from 'key-did-provider-ed25519'
+import { getResolver } from 'key-did-resolver'
 
 const orbis = new Orbis();
 
-@Injectable()
 export class OrbisService {
 
-    constructor(
-        @InjectEthersProvider()
-        private readonly ethersSigner: EthersSigner,
-    ) { }
 
 
     async getPost(post_id: string): Promise<any> {
@@ -113,21 +109,13 @@ export class OrbisService {
         return (data);
     }
 
-    async createProfileOrConnect() {
-
-        const wallet: Wallet = this.ethersSigner.createRandomWallet();
-
-        const provider = "" // HOW do we have wrap a provider object for  orbis ?
-
-        let { data } = await orbis.connect(provider)
-
-
-        return data;
-
-
-
+    // `seed` must be a 32-byte long Uint8Array
+    async authenticateDID(seed: Uint8Array) {
+      const provider = new Ed25519Provider(seed)
+      const did = new DID({ provider, resolver: getResolver() })
+      await did.authenticate()
+      return did
     }
-
 
 
 }

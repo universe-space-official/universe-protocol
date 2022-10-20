@@ -2,6 +2,12 @@ import { Field, ObjectType } from '@nestjs/graphql';
 
 
 @ObjectType()
+export class DIDClass {
+    @Field({ nullable: true })
+    did?: string
+}
+
+@ObjectType()
 export class ProfileOrbis {
     @Field({ nullable: true })
     username?: string

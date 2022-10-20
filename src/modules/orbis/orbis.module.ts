@@ -2,10 +2,9 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { OrbisService } from './orbis.service';
 
-import { EthersModule } from 'nestjs-ethers';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([]), EthersModule.forRoot()],
+    imports: [TypeOrmModule.forFeature([])],
     providers: [OrbisService],
     controllers: []
 })
