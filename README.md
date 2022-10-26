@@ -1,5 +1,5 @@
 <p align="center">
-  <h1>Univer Protocol</h1>
+  <h1>📢 Universe Protocol</h1>
 </p>
 
 ## Installation
