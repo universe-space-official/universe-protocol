@@ -1,5 +1,3 @@
-
-
 # This file may be out-of-date and thus may not contain all of the possible configuration settings. See the [Kodiak documentation](https://github.com/chdsbd/kodiak/blob/master/README.md) and the [config schema](https://github.com/chdsbd/kodiak/blob/master/kodiak/test/fixtures/config/config-schema.json) for more info.
 # .kodiak.toml
 # version is the only required setting in a kodiak config.
@@ -8,7 +6,7 @@ version = 1
 
 [merge]
 # label to use to enable Kodiak to merge a PR
-automerge_label = ":white_check_mark: needs merge" # default: "automerge"
+automerge_label = "needs merge" # default: "automerge"
 
 # require that the automerge label be set for Kodiak to merge a PR. if you
 # disable this Kodiak will immediately attempt to merge every PR you create
@@ -19,7 +17,7 @@ require_automerge_label = true
 blacklist_title_regex = "^WIP.*" # default: "^WIP:.*", options: "" (disables regex), a regex string (e.g. ".*DONT\s*MERGE.*")
 
 # if these labels are set Kodiak will not merge the PR
-blacklist_labels = [":heart: needs acceptance", ":construction: work in progress", ":face_with_head_bandage: needs revision", ":link:  depends on another PR", ":raising_hand_man: needs assistance", ":stop_sign: do not merge"] # default: [], options: list of label names (e.g. ["wip"])
+blacklist_labels = ["work in progress", "depends on another PR", "do not merge"] # default: [], options: list of label names (e.g. ["wip"])
 
 # choose a merge method. If the configured merge method is disabled for a
 # repository, Kodiak will report an error in a status message.
