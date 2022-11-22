@@ -1,10 +1,9 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { NftService } from './nft.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([])],
+  imports: [],
   providers: [NftService],
-  controllers: []
+  controllers: [],
 })
 export class NftModule {}
