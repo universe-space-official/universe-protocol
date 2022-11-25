@@ -21,6 +21,11 @@ $ yarn run start:dev
 $ yarn run start:prod
 ```
 
+## Environment variables
+
+- APP_ENV, example `development`
+- PORT, example `3837`
+
 ## Test
 
 ```bash

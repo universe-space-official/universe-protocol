@@ -26,7 +26,6 @@ export class ProfileResolver {
       // It's implemented this way to make other networks work too
       // also assigning directly because chainId is assigned in getNftsInAddress fn
       NFT721 = nftResponse[0].ERC721;
-      console.log(NFT721);
       const newNFT1155 = nftResponse[0].ERC1155balances;
       newNFT1155.map(nft => {
         NFT1155.push({ ...nft, chainId: 1 });
