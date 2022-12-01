@@ -5,7 +5,7 @@ import { fromString } from 'uint8arrays';
 import { NftService } from '../nft/nft.service.js';
 import { OrbisService } from '../orbis/orbis.service.js';
 
-import { NftContractsResponse, NftListResponse } from '../nft/nft.model.js'; // change to model inside NFT module
+import { NftContractsResponse, NftListResponse } from '../nft/nft.model.js';
 import { OrbisResponse, DIDClass } from '../orbis/orbis.model.js';
 import { Profile } from './profile.model.js';
 
@@ -19,22 +19,15 @@ export class ProfileResolver {
   @Query(() => NftListResponse, { name: 'getProfileNfts' })
   async getProfileNfts(@Args('address') address: string) {
     try {
-      const nftResponse = await this.nftService.getNftsInAddress(address);
-      let NFT721: any[] = [];
-      const NFT1155: any[] = [];
-
-      // It's implemented this way to make other networks work too
-      // also assigning directly because chainId is assigned in getNftsInAddress fn
-      NFT721 = nftResponse[0].ERC721;
-      const newNFT1155 = nftResponse[0].ERC1155balances;
-      newNFT1155.map(nft => {
-        NFT1155.push({ ...nft, chainId: 1 });
+      // For now it only retrieves ERC721 nfts
+      const nftListResponse = await this.nftService.getNftsInAddress({
+        address,
       });
 
       return {
         code: 200,
-        NFT721: NFT721,
-        NFT1155: NFT1155,
+        NFT721: nftListResponse,
+        NFT1155: [],
         message: 'Retrieved data correctly',
       };
     } catch (err) {
@@ -51,16 +44,19 @@ export class ProfileResolver {
     @Args('tokenIds') tokenIds: string,
   ) {
     try {
-      const nftResponse = (await this.nftService.getNftsInContract({
+      // Only focused in NFT721
+      const nftResponse = await this.nftService.getNftsInContract({
         address,
         tokenIds,
         chainId: 1,
         mainnet: true,
-      })) as { data: any; chainId: number };
+        skip: 0,
+        offset: 100,
+      });
 
       return {
         code: 200,
-        NFT721: nftResponse.data || [],
+        NFT721: nftResponse || [],
         message: 'Retrieved data correctly',
       };
     } catch (err) {
