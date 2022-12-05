@@ -1,5 +1,6 @@
 import { request, gql } from 'graphql-request';
 import fetch from 'node-fetch';
+import { NFT721 } from './nft.model';
 
 const APIURL_ETH =
   'https://api.thegraph.com/subgraphs/name/ryry79261/mainnet-erc721-erc1155';
@@ -11,7 +12,10 @@ const APIURL_GOERLI =
 const APIURL_MUMBAI =
   'https://api.thegraph.com/subgraphs/name/leon-do/mumbai-erc721-erc1155';
 
-const nftretrievingSupportHttp = false;
+const APIURL_MARKETPLACE_INFORMATION =
+  'https://gateway.thegraph.com/api/ca477456f6867aa73e24582c464e4e5f/deployments/id/Qmccst5mbV5a6vT6VvJMLPKMAA1VRgT6NGbxkLL8eDRsE7';
+
+const nftretrievingSupportHttp = true;
 const ethereumMainnetNetwork = {
   uri: APIURL_ETH,
   chainId: 1,
@@ -31,6 +35,13 @@ const polygonTestnetNetwork = {
   uri: APIURL_MUMBAI,
   chainId: 80001,
 };
+
+const allNetworks = [
+  ethereumMainnetNetwork,
+  polygonMainnetNetwork,
+  ethereumTestnetNetwork,
+  polygonTestnetNetwork,
+];
 
 const NFT_API = {
   mainnet: [ethereumMainnetNetwork, polygonMainnetNetwork],
@@ -70,6 +81,7 @@ export class NftService {
   }
 
   async getMetadataInNft(nft, chainId) {
+    //setTimeout(() => controller.abort(), 12000);
     let metadata = '{}';
     const nftUri = this.getUriFromNft(nft);
     if (nftUri) {
@@ -115,6 +127,9 @@ export class NftService {
                 id
               }
               identifier
+              owner {
+                id
+              }
             }
             ERC1155balances {
               id
@@ -152,19 +167,17 @@ export class NftService {
   async getNftsInContract({
     address,
     tokenIds,
-    mainnet = true,
     chainId = 1,
     skip = 0,
     offset = 100,
   }: {
     address: string;
-    tokenIds: string;
-    mainnet?: boolean;
+    tokenIds?: string;
     chainId?: number;
     skip: number;
     offset: number;
-  }) {
-    const networkEndpoint = NFT_API[mainnet ? 'mainnet' : 'testnet'].find(
+  }): Promise<NFT721[]> {
+    const networkEndpoint = allNetworks.find(
       endpoint => endpoint.chainId === chainId,
     );
     let tokensQuery = gql`
@@ -172,13 +185,16 @@ export class NftService {
         erc721Tokens(
           where: {
             contract: "${address.toLowerCase()}"
-            identifier_in: [${tokenIds}]
+            ${tokenIds ? `identifier_in: [${tokenIds}]` : ''}
           },
           skip: ${skip},
           first: ${offset}
         ) {
           id
           uri
+          owner {
+            id
+          }
           contract {
             id
           }
@@ -186,14 +202,35 @@ export class NftService {
         }
       }
     `;
-    let requestResponse = await request(networkEndpoint.uri, tokensQuery);
-    const responseData = requestResponse?.accounts?.[0];
-    if (!responseData?.ERC721tokens) {
-      return {};
+    let responseData = await request(networkEndpoint.uri, tokensQuery);
+    if (!responseData?.erc721Tokens) {
+      return [];
     }
-    const erc721Tokens = await responseData.ERC721tokens.map(async nft => {
+    const erc721Tokens = await responseData.erc721Tokens.map(async nft => {
       return await this.getMetadataInNft(nft, networkEndpoint.chainId);
     });
-    return { ...responseData, ERC721: erc721Tokens };
+    return erc721Tokens;
+  }
+
+  async getContractInformation(contractAddress: string) {
+    let tokensQuery = gql`
+      {
+        collection(id: "${contractAddress.toLowerCase()}") {
+          id
+          name
+          symbol
+          totalSupply
+          totalVolume
+        }
+      }
+    `;
+    let responseData = await request(
+      APIURL_MARKETPLACE_INFORMATION,
+      tokensQuery,
+    );
+    if (!responseData?.collection) {
+      return {};
+    }
+    return responseData?.collection;
   }
 }

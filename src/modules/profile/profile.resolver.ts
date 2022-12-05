@@ -5,7 +5,11 @@ import { fromString } from 'uint8arrays';
 import { NftService } from '../nft/nft.service.js';
 import { OrbisService } from '../orbis/orbis.service.js';
 
-import { NftContractsResponse, NftListResponse } from '../nft/nft.model.js';
+import {
+  ContractInformationResponse,
+  NftContractsResponse,
+  NftListResponse,
+} from '../nft/nft.model.js';
 import { OrbisResponse, DIDClass } from '../orbis/orbis.model.js';
 import { Profile } from './profile.model.js';
 
@@ -41,22 +45,48 @@ export class ProfileResolver {
   @Query(() => NftContractsResponse, { name: 'getContractNfts' })
   async getContractNfts(
     @Args('address') address: string,
-    @Args('tokenIds') tokenIds: string,
+    @Args('chainId') chainId: number,
+    @Args('skip', { nullable: true }) skip?: number,
+    @Args('offset', { nullable: true }) offset?: number,
+    @Args('tokenIds', { nullable: true }) tokenIds?: string,
   ) {
     try {
       // Only focused in NFT721
+      // @TODO: Future, accept ERC1155 tokens
       const nftResponse = await this.nftService.getNftsInContract({
         address,
         tokenIds,
-        chainId: 1,
-        mainnet: true,
-        skip: 0,
-        offset: 100,
+        chainId,
+        skip,
+        offset,
       });
 
+      console.log({ nftResponse });
       return {
         code: 200,
         NFT721: nftResponse || [],
+        message: 'Retrieved data correctly',
+      };
+    } catch (err) {
+      return {
+        code: 500,
+        message: err,
+      };
+    }
+  }
+
+  @Query(() => ContractInformationResponse, { name: 'getContractInformation' })
+  async getContractInformation(
+    @Args('contractAddress') contractAddress: string,
+  ) {
+    try {
+      const contract = await this.nftService.getContractInformation(
+        contractAddress,
+      );
+
+      return {
+        code: 200,
+        contract,
         message: 'Retrieved data correctly',
       };
     } catch (err) {

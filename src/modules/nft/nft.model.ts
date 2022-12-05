@@ -7,6 +7,12 @@ export class Contract {
 }
 
 @ObjectType()
+export class Owner {
+  @Field({ nullable: true })
+  id?: string;
+}
+
+@ObjectType()
 export class NFT721 {
   @Field({ nullable: false })
   id?: string;
@@ -25,6 +31,9 @@ export class NFT721 {
 
   @Field({ nullable: true })
   metadata?: String;
+
+  @Field({ nullable: true })
+  owner?: Owner;
 }
 
 @ObjectType()
@@ -48,10 +57,10 @@ export class NftListResponse {
   message?: string;
 
   @Field(() => [NFT721], { nullable: true })
-  NFT721?: any;
+  NFT721?: NFT721[];
 
   @Field(() => [NFT1155], { nullable: true })
-  NFT1155?: any;
+  NFT1155?: NFT1155[];
 }
 
 @ObjectType()
@@ -63,5 +72,35 @@ export class NftContractsResponse {
   message?: string;
 
   @Field(() => [NFT721], { nullable: true })
-  NFT721?: any;
+  NFT721?: NFT721;
+}
+
+@ObjectType()
+export class ContractItem {
+  @Field({ nullable: false })
+  id?: string;
+
+  @Field({ nullable: true })
+  name?: string;
+
+  @Field({ nullable: false })
+  symbol?: string;
+
+  @Field({ nullable: false })
+  totalSupply?: string;
+
+  @Field({ nullable: true })
+  totalVolume?: string;
+}
+
+@ObjectType()
+export class ContractInformationResponse {
+  @Field({ nullable: true })
+  code: number;
+
+  @Field({ nullable: true })
+  message?: string;
+
+  @Field(() => ContractItem, { nullable: true })
+  contract?: ContractItem;
 }
