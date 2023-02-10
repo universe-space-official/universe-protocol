@@ -24,14 +24,14 @@ export class ProfileResolver {
   async getProfileNfts(@Args('address') address: string) {
     try {
       // For now it only retrieves ERC721 nfts
-      const nftListResponse = await this.nftService.getNftsInAddress({
+      const nftObjResponse = await this.nftService.getNftsInAddress({
         address,
       });
 
       return {
         code: 200,
-        NFT721: nftListResponse,
-        NFT1155: [],
+        NFT721: nftObjResponse.erc721,
+        NFT1155: nftObjResponse.erc1155,
         message: 'Retrieved data correctly',
       };
     } catch (err) {

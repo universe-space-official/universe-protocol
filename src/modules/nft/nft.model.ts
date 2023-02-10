@@ -46,6 +46,15 @@ export class NFT1155 {
 
   @Field({ nullable: false })
   contract?: string;
+
+  @Field({ nullable: true })
+  metadata?: String;
+
+  @Field({ nullable: true })
+  chainId?: number;
+
+  @Field({ nullable: true })
+  value?: number;
 }
 
 @ObjectType()

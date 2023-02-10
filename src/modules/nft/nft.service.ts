@@ -53,12 +53,18 @@ export class NftService {
 
   getUriFromNft(nft) {
     const universeIpfsEndpoint = 'https://universeipfs.infura-ipfs.io/ipfs/';
+    if(nft.token){
+      nft.uri = nft.token.uri;
+    }
     if (nft?.uri?.startsWith('ipfs://')) {
       return nft.uri.replace('ipfs://', universeIpfsEndpoint);
     }
     if (nft?.uri?.includes('mypinata.cloud/ipfs/')) {
       const uriPieces = nft.uri.split('mypinata.cloud/ipfs/');
       return universeIpfsEndpoint + uriPieces[1];
+    }
+    if (nft?.uri?.startsWith('Qm') || nft?.uri?.startsWith('baf')) {
+      return universeIpfsEndpoint+nft.uri
     }
     if (nftretrievingSupportHttp) {
       if (nft?.uri?.startsWith('http://') || nft?.uri?.startsWith('https://')) {
@@ -76,7 +82,6 @@ export class NftService {
         }
       }
     }
-
     return '';
   }
 
@@ -111,6 +116,7 @@ export class NftService {
     const networkEndpoints = NFT_API[mainnet ? 'mainnet' : 'testnet'];
 
     const nftList = [];
+    const nftList1155 = [];
     for (const networkEndpoint of networkEndpoints) {
       let tokensQuery = gql`
         {
@@ -149,19 +155,33 @@ export class NftService {
 
       let requestResponse = await request(networkEndpoint.uri, tokensQuery);
       const responseData = requestResponse?.accounts?.[0];
-      if (!responseData?.ERC721tokens) {
-        continue;
+      if (responseData?.ERC721tokens) {
+        const erc721TokensPromises = [];
+        for (const nft of responseData.ERC721tokens) {
+          erc721TokensPromises.push(
+            this.getMetadataInNft(nft, networkEndpoint.chainId),
+          );
+        }
+        const erc721Tokens = await Promise.all(erc721TokensPromises);
+        nftList.push(...erc721Tokens);
       }
-      const erc721TokensPromises = [];
-      for (const nft of responseData.ERC721tokens) {
-        erc721TokensPromises.push(
-          this.getMetadataInNft(nft, networkEndpoint.chainId),
-        );
+
+      if (responseData?.ERC1155balances) {
+        const erc1155TokensPromises = [];
+        for (const nft of responseData.ERC1155balances) {
+          erc1155TokensPromises.push(
+            this.getMetadataInNft(nft, networkEndpoint.chainId),
+          );
+        }
+        const erc1155Tokens = await Promise.all(erc1155TokensPromises);
+        nftList1155.push(...erc1155Tokens);
       }
-      const erc721Tokens = await Promise.all(erc721TokensPromises);
-      nftList.push(...erc721Tokens);
+
     }
-    return nftList;
+    return {
+      erc721: nftList,
+      erc1155: nftList1155
+    };
   }
 
   async getNftsInContract({
