@@ -136,7 +136,7 @@ export class ProfileResolver {
     // import { encryptWithPublicKey } from 'eth-crypto';
 
     // Ethereum public key
-    // const publicKey = '0x...';
+    // const univPublicKey = '0x...';
 
     // // Data to be encrypted
     // const data = JSON.stringify({ secret: 'My secret data' });
