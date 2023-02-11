@@ -7,7 +7,7 @@
   "type": "module",
   "license": "UNLICENSED",
   "engines": {
-    "node": "19.1.0"
+    "node": "18.12.0"
   },
   "scripts": {
     "prebuild": "rimraf dist",
@@ -49,6 +49,7 @@
     "graphql-request": "^5.0.0",
     "graphql-subscriptions": "^2.0.0",
     "joi": "17.6.0",
+    "jsonwebtoken": "^9.0.0",
     "nestjs-ethers": "^1.0.3",
     "nestjs-pino": "^3.1.1",
     "node-fetch": "^3.2.10",
