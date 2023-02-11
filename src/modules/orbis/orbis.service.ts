@@ -125,9 +125,23 @@ export class OrbisService {
 
   // `seed` must be a 32-byte long Uint8Array
   async authenticateDID(seed: Uint8Array) {
+    /*
     const provider = new Ed25519Provider(seed);
     const did = new DID({ provider, resolver: getResolver() });
     await did.authenticate();
     return did;
+    */
+    const orbis = new Orbis();
+    let res = await orbis.connectWithSeed(seed);
+    return(res);
+  }
+
+  async updateProfile(seed){
+    const orbis = new Orbis();
+    let res = await orbis.connectWithSeed(seed);
+
+    await orbis.updateProfile({
+      username: "universeTEST"
+    });
   }
 }

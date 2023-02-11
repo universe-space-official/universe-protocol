@@ -4,6 +4,7 @@ import { fromString } from 'uint8arrays';
 
 import { NftService } from '../nft/nft.service.js';
 import { OrbisService } from '../orbis/orbis.service.js';
+import { Keccak } from 'sha3';
 
 import {
   ContractInformationResponse,
@@ -12,6 +13,9 @@ import {
 } from '../nft/nft.model.js';
 import { OrbisResponse, DIDClass } from '../orbis/orbis.model.js';
 import { Profile } from './profile.model.js';
+
+const hash = new Keccak(256);
+
 
 @Resolver(() => Profile)
 export class ProfileResolver {
@@ -116,17 +120,16 @@ export class ProfileResolver {
   }
 
   @Mutation(() => DIDClass, { name: 'createProfile' })
-  async createProfile(@Args('signature') signature: string): Promise<DIDClass> {
-    const seed = new Uint8Array(fromString(signature, 'base16'));
-    const did = await this.orbisService.authenticateDID(
-      seed.filter((number, index) => {
-        if (index < 32) {
-          return number;
-        }
-      }),
-    );
+  // Use a signed JWT instead of signature; Create generate JWT method
+  async createProfile(@Args('signedJWT') signedJWT: string): Promise<DIDClass> {
+    // Receive the signedJWT and verify
+    hash.update(signedJWT);
+    hash.digest('hex');
+    const seed = new Uint8Array(fromString(hash.digest('hex'),'base16'));
+    const res = await this.orbisService.authenticateDID(seed)
+    //await this.orbisService.updateProfile(seed);
     return {
-      did: did.id,
+      did: res.did,
     };
   }
 }
